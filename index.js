@@ -22,11 +22,11 @@ function rowToCart(row) {
   };
 }
 
-// define endpoints...
+// get product
 service.get('/cart/:product', (request, response) => {
   const product = request.params.product;
 
-  const query = 'SELECT * FROM cart WHERE product = ?';
+  const query = 'SELECT * FROM cart WHERE product = ? AND is_deleted = 0';
   connection.query(query, parameters, (error, rows) => {
     if (error) {
       response.status(500);
@@ -44,7 +44,87 @@ service.get('/cart/:product', (request, response) => {
   });
 });
 
-const port = 8443;
+// create item
+service.post('/cart', (request, response) => {
+  if (request.body.hasOwnProperty('product') &&
+    request.body.hasOwnProperty('manufacturer') &&
+    request.body.hasOwnProperty('count') &&
+    request.body.hasOwnProperty('price')) {
+
+    const parameters = [
+      request.body.product,
+      request.body.manufacturer,
+      parseInt(request.body.count),
+      parseDouble(request.body.price)
+    ];
+
+    const query = 'INSERT INTO cart(product, manufacturer, count, price) VALUES (?, ?, ?, ?)';
+    connection.query(query, parameters, (error, result) => {
+      if (error) {
+        response.status(500);
+        response.json({
+          ok: false,
+          results: error.message,
+        });
+      } else {
+        response.json({
+          ok: true,
+          //results: 'It worked!',
+          results: result.insertId,
+        });
+      }
+    });
+  }
+});
+
+// patch item
+service.patch('/cart/:product', (request, response) => {
+  const parameters = [
+    request.body.product,
+    request.body.manufacturer,
+    parseInt(request.body.count),
+    parseDouble(request.body.price),
+    parseInt(out_of_stock)
+  ];
+
+  const query = 'UPDATE memory SET manufacturer = ?, count = ?, price = ?, out_of_stock = ? WHERE product = ?';
+  connection.query(query, parameters, (error, result) => {
+    if (error) {
+      response.status(404);
+      response.json({
+        ok: false,
+        results: error.message,
+      });
+    } else {
+      response.json({
+        ok: true,
+      });
+    }
+  });
+});
+
+// delete item
+service.delete('/cart/:product', (request, response) => {
+  //const parameters = [parseInt(request.params.id)];
+  const product = request.params.product;
+
+  const query = 'UPDATE memory SET is_deleted = 1 WHERE product = ?';
+  connection.query(query, parameters, (error, result) => {
+    if (error) {
+      response.status(404);
+      response.json({
+        ok: false,
+        results: error.message,
+      });
+    } else {
+      response.json({
+        ok: true,
+      });
+    }
+  });
+});
+
+const port = 5001;
 service.listen(port, () => {
   console.log(`We're live in port ${port}!`);
 });
