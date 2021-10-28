@@ -1,4 +1,4 @@
-- Remove any existing database and user.
+-- Remove any existing database and user.
 DROP DATABASE IF EXISTS cart;
 DROP USER IF EXISTS shopper@localhost;
 
