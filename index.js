@@ -25,7 +25,9 @@ function rowToCart(row) {
 
 // get product
 service.get('/item/:product', (request, response) => {
-  const product = request.params.product;
+  const parameters = [
+    request.params.product
+  ];
 
   const query = 'SELECT * FROM cart WHERE product = ? AND is_deleted = 0';
   connection.query(query, parameters, (error, rows) => {
