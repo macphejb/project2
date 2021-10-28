@@ -91,7 +91,7 @@ service.patch('/cart/:product', (request, response) => {
     parseInt(out_of_stock)
   ];
 
-  const query = 'UPDATE memory SET manufacturer = ?, count = ?, price = ?, out_of_stock = ? WHERE product = ?';
+  const query = 'UPDATE cart SET manufacturer = ?, count = ?, price = ?, out_of_stock = ? WHERE product = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
@@ -109,10 +109,10 @@ service.patch('/cart/:product', (request, response) => {
 
 // delete item
 service.delete('/cart/:product', (request, response) => {
-  //const parameters = [parseInt(request.params.id)];
-  const product = request.params.product;
+  const parameters = [request.params.product];
+  //const product = request.params.product;
 
-  const query = 'UPDATE memory SET is_deleted = 1 WHERE product = ?';
+  const query = 'UPDATE cart SET is_deleted = 1 WHERE product = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
@@ -126,6 +126,11 @@ service.delete('/cart/:product', (request, response) => {
       });
     }
   });
+});
+
+// get report
+service.get('/report.html', (request, response) => {
+    response.sendFile('report.html', {root: __dirname});
 });
 
 const port = 5001;
