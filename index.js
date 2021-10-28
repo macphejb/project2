@@ -6,6 +6,7 @@ const credentials = JSON.parse(fs.readFileSync('credentials.json', 'utf8'));
 const connection = mysql.createConnection(credentials);
 
 const service = express();
+service.use(express.json());
 
 connection.connect(error => {
   if (error) {
@@ -23,7 +24,7 @@ function rowToCart(row) {
 }
 
 // get product
-service.get('/cart/:product', (request, response) => {
+service.get('/item/:product', (request, response) => {
   const product = request.params.product;
 
   const query = 'SELECT * FROM cart WHERE product = ? AND is_deleted = 0';
@@ -55,7 +56,7 @@ service.post('/cart', (request, response) => {
       request.body.product,
       request.body.manufacturer,
       parseInt(request.body.count),
-      parseDouble(request.body.price)
+      parseFloat(request.body.price)
     ];
 
     const query = 'INSERT INTO cart(product, manufacturer, count, price) VALUES (?, ?, ?, ?)';
@@ -83,7 +84,7 @@ service.patch('/cart/:product', (request, response) => {
     request.body.product,
     request.body.manufacturer,
     parseInt(request.body.count),
-    parseDouble(request.body.price),
+    parseFloat(request.body.price),
     parseInt(out_of_stock)
   ];
 
