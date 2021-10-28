@@ -19,7 +19,8 @@ function rowToCart(row) {
   return {
     product: row.product,
     manufacturer: row.manufacturer,
-    count: row.count
+    count: row.count,
+    price: row.price
   };
 }
 
