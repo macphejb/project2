@@ -118,16 +118,16 @@ service.patch('/cart/:id', (request, response) => {
 /*
 curl --header 'Content-Type: application/json' \
   --request PATCH \
-  --data '{"manufacturer": "c-city", "count": 3, "price": 9.50}' \
-  https://twenty7.me:8443/cart/ball
+  --data '{"product": "lamp", "manufacturer": "c-city", "count": 3, "price": 9.50}' \
+  https://twenty7.me:8443/cart/1
 */
 
 // delete item
-service.delete('/cart/:product', (request, response) => {
-  const parameters = [request.params.product];
+service.delete('/cart/:id', (request, response) => {
+  const parameters = [parseInt(request.params.id)];
   //const product = request.params.product;
 
-  const query = 'UPDATE cart SET is_deleted = 1 WHERE product = ?';
+  const query = 'UPDATE cart SET is_deleted = 1 WHERE id = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
@@ -142,6 +142,10 @@ service.delete('/cart/:product', (request, response) => {
     }
   });
 });
+/*
+curl --request DELETE \
+  https://twenty7.me:8443/cart/1
+*/
 
 // get report
 service.get('/report.html', (request, response) => {
