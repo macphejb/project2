@@ -85,7 +85,7 @@ service.post('/cart', (request, response) => {
 
 /*
 curl --header 'Content-Type: application/json' \
-  --data '{"product": "ball", "manufacturer": "c-town", "count": 1, "price": 3.50}' \
+  --data '{"product": "lamp", "manufacturer": "c-town", "count": 1, "price": 3.50}' \
   https://twenty7.me:8443/cart/
   */
 
@@ -99,7 +99,7 @@ service.patch('/cart/:id', (request, response) => {
     parseInt(request.params.id)
   ];
 
-  const query = 'UPDATE cart SET manufacturer = ?, count = ?, price = ? WHERE product = ?';
+  const query = 'UPDATE cart SET product = ?, manufacturer = ?, count = ?, price = ? WHERE id = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);
