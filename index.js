@@ -82,10 +82,16 @@ service.post('/cart', (request, response) => {
   }
 });
 
+/*
+curl --header 'Content-Type: application/json' \
+  --data '{"product": "ball", "manufacturer": "c-town", "count": 1, "price": 3.50}' \
+  https://twenty7.me:8443/cart/
+  */
+
 // patch item
 service.patch('/cart/:product', (request, response) => {
   const parameters = [
-    request.body.product,
+    request.params.product,
     request.body.manufacturer,
     parseInt(request.body.count),
     parseFloat(request.body.price)
@@ -106,6 +112,13 @@ service.patch('/cart/:product', (request, response) => {
     }
   });
 });
+
+/*
+curl --header 'Content-Type: application/json' \
+  --request PATCH \
+  --data '{"product": "ball", "manufacturer": "c-city", "count": 3, "price": 9.50}' \
+  https://twenty7.me:8443/cart/ball
+*/
 
 // delete item
 service.delete('/cart/:product', (request, response) => {
