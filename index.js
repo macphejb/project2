@@ -20,7 +20,9 @@ function rowToCart(row) {
     product: row.product,
     manufacturer: row.manufacturer,
     count: row.count,
-    price: row.price
+    price: row.price,
+    out_of_stock: row.out_of_stock,
+    is_deleted: row.is_deleted
   };
 }
 
