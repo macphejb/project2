@@ -17,6 +17,7 @@ connection.connect(error => {
 
 function rowToCart(row) {
   return {
+    id: row.id,
     product: row.product,
     manufacturer: row.manufacturer,
     count: row.count,
@@ -89,12 +90,13 @@ curl --header 'Content-Type: application/json' \
   */
 
 // patch item
-service.patch('/cart/:product', (request, response) => {
+service.patch('/cart/:id', (request, response) => {
   const parameters = [
-    request.params.product,
+    request.body.product,
     request.body.manufacturer,
     parseInt(request.body.count),
-    parseFloat(request.body.price)
+    parseFloat(request.body.price),
+    parseInt(request.params.id)
   ];
 
   const query = 'UPDATE cart SET manufacturer = ?, count = ?, price = ? WHERE product = ?';
@@ -116,7 +118,7 @@ service.patch('/cart/:product', (request, response) => {
 /*
 curl --header 'Content-Type: application/json' \
   --request PATCH \
-  --data '{"product": "ball", "manufacturer": "c-city", "count": 3, "price": 9.50}' \
+  --data '{"manufacturer": "c-city", "count": 3, "price": 9.50}' \
   https://twenty7.me:8443/cart/ball
 */
 
