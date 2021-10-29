@@ -21,7 +21,6 @@ function rowToCart(row) {
     manufacturer: row.manufacturer,
     count: row.count,
     price: row.price,
-    out_of_stock: row.out_of_stock,
     is_deleted: row.is_deleted
   };
 }
@@ -89,11 +88,10 @@ service.patch('/cart/:product', (request, response) => {
     request.body.product,
     request.body.manufacturer,
     parseInt(request.body.count),
-    parseFloat(request.body.price),
-    parseInt(out_of_stock)
+    parseFloat(request.body.price)
   ];
 
-  const query = 'UPDATE cart SET manufacturer = ?, count = ?, price = ?, out_of_stock = ? WHERE product = ?';
+  const query = 'UPDATE cart SET manufacturer = ?, count = ?, price = ? WHERE product = ?';
   connection.query(query, parameters, (error, result) => {
     if (error) {
       response.status(404);

@@ -5,6 +5,5 @@ CREATE TABLE cart (
   manufacturer TEXT,
   count INT DEFAULT 0,
   price FLOAT,
-  out_of_stock INT DEFAULT 0,
   is_deleted INT DEFAULT 0
 );
