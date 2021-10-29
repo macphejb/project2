@@ -26,7 +26,7 @@ function rowToCart(row) {
 }
 
 // get product
-service.get('/item/:product', (request, response) => {
+service.get('/cart/:product', (request, response) => {
   const parameters = [
     request.params.product
   ];
