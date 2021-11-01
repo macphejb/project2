@@ -31,19 +31,13 @@ service.get('/report.html', (request, response) => {
   response.sendFile('report.html', {root: __dirname});
 });
 
-service.options('*', (request, response) => {
-  response.set('Access-Control-Allow-Headers', 'Content-Type');
-  response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
-  response.sendStatus(200);
-});
-
 // get product
-service.get('/cart/:id', (request, response) => {
+service.get('/cart/:product', (request, response) => {
   const parameters = [
-    request.params.id
+    request.params.product
   ];
 
-  const query = 'SELECT * FROM cart WHERE id = ? AND is_deleted = 0';
+  const query = 'SELECT * FROM cart WHERE product = ? AND is_deleted = 0';
   connection.query(query, parameters, (error, rows) => {
     if (error) {
       response.status(500);
@@ -63,10 +57,6 @@ service.get('/cart/:id', (request, response) => {
 
 // get all
 service.get('/cart', (request, response) => {
-  const parameters = [
-    request.params.id
-  ];
-
   const query = 'SELECT * FROM cart WHERE is_deleted = 0';
   connection.query(query, parameters, (error, rows) => {
     if (error) {
@@ -120,7 +110,7 @@ service.post('/cart', (request, response) => {
 
 /*
 curl --header 'Content-Type: application/json' \
-  --data '{"product": "balloons", "manufacturer": "c-town", "count": 1, "price": 3.50}' \
+  --data '{"product": "pens", "manufacturer": "c-town", "count": 1, "price": 3.50}' \
   https://twenty7.me:8443/cart/
   */
 
@@ -181,6 +171,12 @@ service.delete('/cart/:id', (request, response) => {
 curl --request DELETE \
   https://twenty7.me:8443/cart/1
 */
+
+service.options('*', (request, response) => {
+  response.set('Access-Control-Allow-Headers', 'Content-Type');
+  response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
+  response.sendStatus(200);
+});
 
 const port = 5001;
 service.listen(port, () => {
