@@ -27,12 +27,12 @@ function rowToCart(row) {
 }
 
 // get product
-service.get('/cart/:product', (request, response) => {
+service.get('/cart/:id', (request, response) => {
   const parameters = [
-    request.params.product
+    request.params.id
   ];
 
-  const query = 'SELECT * FROM cart WHERE product = ? AND is_deleted = 0';
+  const query = 'SELECT * FROM cart WHERE id = ? AND is_deleted = 0';
   connection.query(query, parameters, (error, rows) => {
     if (error) {
       response.status(500);
