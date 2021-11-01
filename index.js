@@ -26,6 +26,17 @@ function rowToCart(row) {
   };
 }
 
+// get report
+service.get('/report.html', (request, response) => {
+  response.sendFile('report.html', {root: __dirname});
+});
+
+service.options('*', (request, response) => {
+  response.set('Access-Control-Allow-Headers', 'Content-Type');
+  response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
+  response.sendStatus(200);
+});
+
 // get product
 service.get('/cart/:id', (request, response) => {
   const parameters = [
@@ -146,17 +157,6 @@ service.delete('/cart/:id', (request, response) => {
 curl --request DELETE \
   https://twenty7.me:8443/cart/1
 */
-
-// get report
-service.get('/report.html', (request, response) => {
-    response.sendFile('report.html', {root: __dirname});
-});
-
-service.options('*', (request, response) => {
-  response.set('Access-Control-Allow-Headers', 'Content-Type');
-  response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
-  response.sendStatus(200);
-});
 
 const port = 5001;
 service.listen(port, () => {
