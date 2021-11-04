@@ -55,26 +55,6 @@ service.get('/cart/:product', (request, response) => {
   });
 });
 
-// get all
-service.get('/cart', (request, response) => {
-  const query = 'SELECT * FROM cart WHERE is_deleted = 0';
-  connection.query(query, parameters, (error, rows) => {
-    if (error) {
-      response.status(500);
-      response.json({
-        ok: false,
-        results: error.message,
-      });
-    } else {
-      const cart = rows.map(rowToCart);
-      response.json({
-        ok: true,
-        results: rows.map(rowToCart),
-      });
-    }
-  });
-});
-
 // create item
 service.post('/cart', (request, response) => {
   if (request.body.hasOwnProperty('product') &&
@@ -110,7 +90,7 @@ service.post('/cart', (request, response) => {
 
 /*
 curl --header 'Content-Type: application/json' \
-  --data '{"product": "pens", "manufacturer": "c-town", "count": 1, "price": 3.50}' \
+  --data '{"product": "lamp", "manufacturer": "brightbulbs", "count": 3, "price": 9.99}' \
   https://twenty7.me:8443/cart/
   */
 
@@ -143,8 +123,8 @@ service.patch('/cart/:id', (request, response) => {
 /*
 curl --header 'Content-Type: application/json' \
   --request PATCH \
-  --data '{"product": "lamp", "manufacturer": "c-city", "count": 3, "price": 9.50}' \
-  https://twenty7.me:8443/cart/1
+  --data '{"product": "lamp", "manufacturer": "c-city", "count": 3, "price": 19.99}' \
+  https://twenty7.me:8443/cart/7
 */
 
 // delete item

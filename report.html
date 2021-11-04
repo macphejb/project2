@@ -29,11 +29,16 @@
     <h2>Endpoints:</h2>
 
     <h4>GET: https://project2.twenty7.me:8443/cart/:product</h4>
-    <h4>POST: https://project2.twenty7.me:8443/cart</h4>
-    <h4>PATCH: https://project2.twenty7.me:8443/cart/:id</h4>
-    <h4>DELETE: https://project2.twenty7.me:8443/cart/:id</h4>
+    <p>curl https://project2.twenty7.me:8443/cart/pens</p>
 
-    <p>JSON Data Example: {"product": "lamp", "manufacturer": "brightbulbs", "count": 3, "price": 9.50}</p>
+    <h4>POST: https://project2.twenty7.me:8443/cart</h4>
+    <p>curl --header 'Content-Type: application/json' --data '{"product": "lamp", "manufacturer": "brightbulbs", "count": 3, "price": 9.99}' https://twenty7.me:8443/cart</p>
+
+    <h4>PATCH: https://project2.twenty7.me:8443/cart/:id</h4>
+    <p>curl --header 'Content-Type: application/json' --request PATCH --data '{"product": "pens", "manufacturer": "c-city", "count": 3, "price": 9.99}' https://twenty7.me:8443/cart/4</p>
+
+    <h4>DELETE: https://project2.twenty7.me:8443/cart/:id</h4>
+    <p>curl --request DELETE https://twenty7.me:8443/cart/4</p>
 
 </body>
 </html>
