@@ -31,6 +31,11 @@ service.use((request, response, next) => {
   next();
 });
 
+// get report
+service.get('/report.html', (request, response) => {
+  response.sendFile('report.html', {root: __dirname});
+});
+
 // get product
 service.get('/cart/:product', (request, response) => {
   const parameters = [
@@ -90,7 +95,7 @@ service.post('/cart', (request, response) => {
 
 /*
 curl --header 'Content-Type: application/json' \
-  --data '{"product": "lamp", "manufacturer": "c-town", "count": 1, "price": 3.50}' \
+  --data '{"product": "lamp", "manufacturer": "brightbulbs", "count": 3, "price": 9.99}' \
   https://twenty7.me:8443/cart/
   */
 
@@ -151,11 +156,6 @@ service.delete('/cart/:id', (request, response) => {
 curl --request DELETE \
   https://twenty7.me:8443/cart/1
 */
-
-// get report
-service.get('/report.html', (request, response) => {
-    response.sendFile('report.html', {root: __dirname});
-});
 
 service.options('*', (request, response) => {
   response.set('Access-Control-Allow-Headers', 'Content-Type');
