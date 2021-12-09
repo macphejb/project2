@@ -26,6 +26,11 @@ function rowToCart(row) {
   };
 }
 
+service.use((request, response, next) => {
+  response.set('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 // get product
 service.get('/cart/:product', (request, response) => {
   const parameters = [
@@ -118,8 +123,8 @@ service.patch('/cart/:id', (request, response) => {
 /*
 curl --header 'Content-Type: application/json' \
   --request PATCH \
-  --data '{"product": "lamp", "manufacturer": "c-city", "count": 3, "price": 9.50}' \
-  https://twenty7.me:8443/cart/1
+  --data '{"product": "stool", "manufacturer": "c-city", "count": 3, "price": 9.57}' \
+  https://twenty7.me:8443/cart/2
 */
 
 // delete item
