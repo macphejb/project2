@@ -31,9 +31,39 @@ service.use((request, response, next) => {
   next();
 });
 
+service.options('*', (request, response) => {
+  response.set('Access-Control-Allow-Headers', 'Content-Type');
+  response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
+  response.sendStatus(200);
+});
+
 // get report
 service.get('/report.html', (request, response) => {
   response.sendFile('report.html', {root: __dirname});
+});
+
+// get all
+service.get('/cart', (request, response) => {
+  // const parameters = [
+  //   request.params.product
+  // ];
+
+  const query = 'SELECT * FROM cart WHERE is_deleted = 0';
+  connection.query(query, (error, rows) => {
+    if (error) {
+      response.status(500);
+      response.json({
+        ok: false,
+        results: error.message,
+      });
+    } else {
+      const cart = rows.map(rowToCart);
+      response.json({
+        ok: true,
+        results: rows.map(rowToCart),
+      });
+    }
+  });
 });
 
 // get product
@@ -156,12 +186,6 @@ service.delete('/cart/:id', (request, response) => {
 curl --request DELETE \
   https://twenty7.me:8443/cart/1
 */
-
-service.options('*', (request, response) => {
-  response.set('Access-Control-Allow-Headers', 'Content-Type');
-  response.set('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
-  response.sendStatus(200);
-});
 
 const port = 5001;
 service.listen(port, () => {
